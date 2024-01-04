@@ -42,7 +42,7 @@ class PaintsTorchDataset(Dataset):
         tensor = torch.from_numpy(buffer).permute(2, 0, 1).to(torch.bfloat16)
         tensor = tensor[:, y:y + 512, x:x + 512]
         return Triplet(
-            pre_illustration(tensor[:3]),
-            pre_lineart(tensor[3 + np.random.randint(0, 3), None]),
-            pre_illustration(tensor[6:]),
+            pre_illustration(tensor[:3].to(torch.bfloat16)),
+            pre_lineart(tensor[3 + np.random.randint(0, 3), None].to(torch.bfloat16)),
+            pre_illustration(tensor[6:].to(torch.bfloat16)),
         )
