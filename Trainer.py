@@ -1,5 +1,5 @@
 from data import PaintsTorchDataset
-from model import Autoencoder, AutoV2
+from model import Autoencoder, AutoV2, AutoV2_Lite, Autoencoder_Max, Autoencoder_3, Autoencoder_3_Ultimate
 
 from torch.utils.data import DataLoader
 import torch
@@ -87,7 +87,7 @@ def train(model, train_loader, test_loader, criterion, optimizer, num_epochs, de
         test_loss = evaluate(model, test_loader, criterion, device)
         print(f"Test Loss after Epoch {epoch+1}: {test_loss:.4f}")
         # Save Model
-        torch.save(model.state_dict(), os.path.join("D:\Dataset\PaintTorch\models", f"{epoch+1}--autoV2--{epoch_loss:.4f}.pth"))
+        torch.save(model.state_dict(), os.path.join("D:\Dataset\PaintTorch\models", f"{epoch+1}--Autoencoder_3_Ultimate--{epoch_loss:.4f}.pth"))
 
         # Save images at the end of each epoch
         save_images(epoch + 1, model, dataset, device)
@@ -95,21 +95,21 @@ def train(model, train_loader, test_loader, criterion, optimizer, num_epochs, de
 if __name__ == "__main__":
     # Parameters and Data Loader Setup
     train_dataset = PaintsTorchDataset( Path("D:/Dataset/PaintTorch/prepared/prepared/train"))
-    train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+    train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True)
 
     test_dataset = PaintsTorchDataset( Path("D:/Dataset/PaintTorch/prepared/prepared/test"))
-    test_dataloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
+    test_dataloader = DataLoader(test_dataset, batch_size=16, shuffle=False)
 
     # Device and Model Setup
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = AutoV2().to(device).to(torch.bfloat16)
+    model = Autoencoder_3_Ultimate().to(device).to(torch.bfloat16)
 
     # Loss Function and Optimizer
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
     # Number of Training Epochs
-    num_epochs = 1000
+    num_epochs = 10000
 
      # Start Training
     train(model, train_dataloader, test_dataloader, criterion, optimizer, num_epochs, device, test_dataset)
