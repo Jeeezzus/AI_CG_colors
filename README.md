@@ -33,7 +33,7 @@ The ultimate autoencoder (`Autoencoder_3_Ultimate`) is the most advanced model i
 here is a sample: 
 ![Autoencoder_3_Ultimate sample](rm/epoch_59.png)
 
-##Thanks
+## Thanks
 The model was trained using the dataset class and datas of [Paint Torch][1]
 
 
