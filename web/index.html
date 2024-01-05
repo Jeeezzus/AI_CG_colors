@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Processing with ONNX Runtime</title>
+    <style>
+        #canvasContainer, #outputContainer {
+            display: inline-block;
+            vertical-align: top;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvasContainer">
+        <canvas id="inputCanvas" width="512" height="512"></canvas>
+    </div>
+    <div id="outputContainer">
+        <img id="outputImage" width="512" height="512" />
+    </div>
+    <div id="controls">
+        <button id="runModelButton">Run Model</button>
+        <button id="test">test</button>
+         <!-- Color Picker -->
+        <label for="colorPicker">Color:</label>
+        <input type="color" id="colorPicker" value="#000000">
+        <button id="drawButton">Draw</button>
+        <button id="eraseButton">Erase</button>
+        <button id="resetButton">Reset Canvas</button>
+    </div>
+    
+
+<!-- Line Width Slider -->
+<label for="lineWidthSlider">Line Width:</label>
+<input type="range" id="lineWidthSlider" min="1" max="50" value="1">
+
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

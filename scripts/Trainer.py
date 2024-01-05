@@ -46,7 +46,7 @@ def save_images(epoch, model, dataset, device):
         draw.text((i * section_width + 10, 10), label, (255, 255, 255), font=font)
 
     # Save the annotated image
-    all_images_pil.save(f"epochsTestifier/epoch_{epoch}.png")
+    all_images_pil.save(f"D:/GithUB/AI_CG_colors/scripts/epochsTestifier/recons_epoch_{epoch}.png")
 
 def evaluate(model, test_loader, criterion, device):
     model.eval()  # Set the model to evaluation mode
@@ -72,7 +72,7 @@ def train(model, train_loader, test_loader, criterion, optimizer, num_epochs, de
         running_loss = 0.0
         for data in tqdm(train_loader, desc=f"Epoch {epoch+1}/{num_epochs}", leave=False):
             lineart, palette, illustration = data.lineart, data.palette, data.illustration
-            lineart, palette, illustration = lineart.to(device), palette.to(device), illustration.to(device)
+            lineart, palette, illustration = lineart.to(device).float(), palette.to(device).float(), illustration.to(device).float()
 
             inputs = torch.cat((lineart, palette), dim=1)
             optimizer.zero_grad()
@@ -87,7 +87,7 @@ def train(model, train_loader, test_loader, criterion, optimizer, num_epochs, de
         test_loss = evaluate(model, test_loader, criterion, device)
         print(f"Test Loss after Epoch {epoch+1}: {test_loss:.4f}")
         # Save Model
-        torch.save(model.state_dict(), os.path.join("D:\Dataset\PaintTorch\models", f"{epoch+1}--Autoencoder_3_Ultimate--{epoch_loss:.4f}.pth"))
+        torch.save(model.state_dict(), os.path.join("D:/Dataset/PaintTorch/models", f"{epoch+1}--Auto1_float32_recons--{epoch_loss:.4f}.pth"))
 
         # Save images at the end of each epoch
         save_images(epoch + 1, model, dataset, device)
@@ -95,21 +95,23 @@ def train(model, train_loader, test_loader, criterion, optimizer, num_epochs, de
 if __name__ == "__main__":
     # Parameters and Data Loader Setup
     train_dataset = PaintsTorchDataset( Path("D:/Dataset/PaintTorch/prepared/prepared/train"))
-    train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True)
+    train_dataloader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 
     test_dataset = PaintsTorchDataset( Path("D:/Dataset/PaintTorch/prepared/prepared/test"))
-    test_dataloader = DataLoader(test_dataset, batch_size=16, shuffle=False)
+    test_dataloader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
     # Device and Model Setup
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = Autoencoder_3_Ultimate().to(device).to(torch.bfloat16)
+    model = Autoencoder()  
+    model = model.float()
+    model.to(device)
 
     # Loss Function and Optimizer
-    criterion = nn.MSELoss()
+    criterion = nn.L1Loss(reduction='sum')
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
     # Number of Training Epochs
-    num_epochs = 10000
+    num_epochs = 10
 
      # Start Training
     train(model, train_dataloader, test_dataloader, criterion, optimizer, num_epochs, device, test_dataset)

@@ -11,9 +11,9 @@ def convert_to_onnx(model_class, model_path, onnx_path, input_shape):
     torch.onnx.export(model, dummy_input, onnx_path, verbose=True)
 
 
-model_class = Autoencoder_3_Ultimate
-model_path = "D:/GithUB/AI_CG_colors/models_checkpoints/auto3_ultimate/32--Autoencoder_3_Ultimate--0.1247.pth"  
-onnx_path = "auto3_ultimate.onnx" 
+model_class = Autoencoder
+model_path = "D:/GithUB/AI_CG_colors/models_checkpoints/Auto1_float/10--Auto1_float32--0.1347.pth"  
+onnx_path = "auto1_float.onnx" 
 input_shape = (1, 4, 512, 512)
 
 convert_to_onnx(model_class, model_path, onnx_path, input_shape)
