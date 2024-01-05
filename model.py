@@ -67,13 +67,13 @@ class Autoencoder_3_Ultimate(nn.Module):
     def __init__(self):
         super(Autoencoder_3_Ultimate, self).__init__()
         # Encoder layers
-        self.enc_conv1 = nn.Conv2d(in_channels=4, out_channels=128, kernel_size=5, stride=2, padding=1)
+        self.enc_conv1 = nn.Conv2d(in_channels=4, out_channels=128, kernel_size=3, stride=2, padding=1)
         self.enc_conv2 = nn.Conv2d(in_channels=128, out_channels=512, kernel_size=3, stride=2, padding=1)
         self.enc_conv3 = nn.Conv2d(in_channels=512, out_channels=2048, kernel_size=3, stride=2, padding=1)
         # Decoder layers
         self.dec_conv1 = nn.ConvTranspose2d(in_channels=2048, out_channels=512, kernel_size=3, stride=2, padding=1, output_padding=1)
         self.dec_conv2 = nn.ConvTranspose2d(in_channels=512, out_channels=128, kernel_size=3, stride=2, padding=1, output_padding=1)
-        self.dec_conv3 = nn.ConvTranspose2d(in_channels=128, out_channels=3, kernel_size=5, stride=2, padding=1, output_padding=1)
+        self.dec_conv3 = nn.ConvTranspose2d(in_channels=128, out_channels=3, kernel_size=3, stride=2, padding=1, output_padding=1)
 
     def forward(self, x):
         # Encoder
@@ -84,6 +84,7 @@ class Autoencoder_3_Ultimate(nn.Module):
         x = F.relu(self.dec_conv1(x))
         x = F.relu(self.dec_conv2(x))
         x = torch.sigmoid(self.dec_conv3(x))
+        #x = F.interpolate(x, size=(512, 512)) #will need to touch padding and other stuff
         return x
 
 class AutoV2(nn.Module): #tooooooo big
