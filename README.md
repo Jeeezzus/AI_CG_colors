@@ -1,4 +1,4 @@
-# Project Title
+# PaintTorch (Wish edition)
 
 ## Project Overview
 
